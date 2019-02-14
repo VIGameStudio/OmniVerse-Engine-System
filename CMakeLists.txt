@@ -7,11 +7,17 @@ set(${PROJECT_NAME}_REVISION_VERSION 1)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall")
 
-find_package(OpenGL REQUIRED)
-find_package(GLUT REQUIRED)
-find_package(X11 REQUIRED)
+option(OVE_SYSTEM_BUILD_DEMO "Build demo application." ON)
+option(OVE_SYSTEM_BUILD_TEST "Build test targets." OFF)
+option(OVE_SYSTEM_SHARED "Build as shared library." OFF)
 
-add_subdirectory(extern)
+if(NOT ${OVE_SYSTEM_SHARED})
+    find_package(OpenGL REQUIRED)
+    find_package(X11 REQUIRED)
+
+    add_subdirectory(extern)
+endif()
+
 include_directories(src)
 
 add_library(ove_system SHARED
@@ -32,15 +38,17 @@ add_library(ove_system SHARED
 )
 target_link_libraries(ove_system ${X11_LIBRARY} ${OPENGL_LIBRARY} ${GLUT_LIBRARY})
 
-if(OVE_SYS_BUILD_DEMO)
+if(${OVE_SYSTEM_BUILD_DEMO})	
+    find_package(GLUT REQUIRED)
+
     add_executable(demo demo/main.cpp)
     target_link_libraries(demo ove_system)
-endif(OVE_SYS_BUILD_DEMO)
+endif()
 
-if(OVE_SYS_BUILD_TEST)
+if(${OVE_SYSTEM_BUILD_TEST})
     enable_testing()
 
     add_executable(_test test/_test.cpp)
     add_test(A_test _test)
     target_link_libraries(_test ove_system)
-endif(OVE_SYS_BUILD_TEST)
+endif()
