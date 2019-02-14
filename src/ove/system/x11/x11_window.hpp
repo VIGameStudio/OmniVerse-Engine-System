@@ -3,6 +3,7 @@
 #include <GL/gl.h>
 #include <GL/glx.h>
 #include <X11/Xlib.h>
+#include <X11/Xutil.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -36,7 +37,6 @@ namespace system {
         Display* m_pDisplay;
         Window m_root;
         XEvent m_event;
-        XVisualInfo* m_pVisualInfo;
         GLXContext m_context;
         Window m_window;
         XWindowAttributes m_attribs;

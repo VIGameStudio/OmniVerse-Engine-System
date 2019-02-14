@@ -38,9 +38,7 @@ add_library(ove_system SHARED
 )
 target_link_libraries(ove_system ${X11_LIBRARY} ${OPENGL_LIBRARY} ${GLUT_LIBRARY})
 
-if(${OVE_SYSTEM_BUILD_DEMO})	
-    find_package(GLUT REQUIRED)
-
+if(${OVE_SYSTEM_BUILD_DEMO})
     add_executable(demo demo/main.cpp)
     target_link_libraries(demo ove_system)
 endif()
