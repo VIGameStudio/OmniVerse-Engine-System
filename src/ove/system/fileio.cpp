@@ -5,27 +5,26 @@
 #include <vector>
 
 namespace ove {
-namespace file {
+	namespace file {
+		void read(const std::string& path, std::string& out)
+		{
+			std::ifstream ifs(path, std::ios::in);
 
-    void read(const std::string& path, std::string& out)
-    {
-        std::ifstream ifs(path, std::ios::in);
+			if (!ifs.is_open()) {
+				std::cerr << "Could not read file " << path << ". File does not exist.\n";
+				out = "";
+			}
+			else {
+				std::string line = "";
+				while (!ifs.eof()) {
+					std::getline(ifs, line);
+					out.append(line + "\n");
+				}
+			}
 
-        if (!ifs.is_open()) {
-            std::cerr << "Could not read file " << path << ". File does not exist.\n";
-            out = "";
-        } else {
-            std::string line = "";
-            while (!ifs.eof()) {
-                std::getline(ifs, line);
-                out.append(line + "\n");
-            }
-        }
+			ifs.close();
+		}
 
-        ifs.close();
-    }
-
-    void write(const std::string& path, const std::string& out) {}
-
-}
+		void write(const std::string& path, const std::string& out) {}
+	}
 }

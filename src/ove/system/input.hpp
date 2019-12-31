@@ -1,24 +1,22 @@
 #pragma once
 
 namespace ove {
-namespace system {
+	namespace system {
+		enum MouseButton
+		{
+			BUTTON_1,
+			BUTTON_2,
+			BUTTON_3
+		};
 
-    enum MouseButton
-    {
-        BUTTON_1,
-        BUTTON_2,
-        BUTTON_3
-    };
+		enum ButtonAction {
+			BUTTON_PRESSED,
+			BUTTON_RELEASED
+		};
 
-    enum ButtonAction {
-        BUTTON_PRESSED,
-        BUTTON_RELEASED
-    };
-
-    enum KeyAction {
-        KEY_PRESSED,
-        KEY_RELEASED
-    };
-
-}
+		enum KeyAction {
+			KEY_PRESSED,
+			KEY_RELEASED
+		};
+	}
 }

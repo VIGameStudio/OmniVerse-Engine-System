@@ -1,14 +1,18 @@
 #pragma once
 
 #include <ove/system/window.hpp>
-#include <windows.h>
+
+#include <bcm_host.h>
+#include <EGL/egl.h>
+#include <EGL/eglext.h>
+#include <EGL/eglplatform.h>
 
 namespace ove {
 	namespace system {
-		struct win_window_t : public window_t {
+		struct dispmanx_window_t : public window_t {
 		public:
-			win_window_t();
-			~win_window_t();
+			dispmanx_window_t();
+			~dispmanx_window_t();
 
 			virtual bool create(const char* title, core::u32 width, core::u32 height);
 
@@ -29,9 +33,10 @@ namespace ove {
 			virtual void getSize(core::u32& width, core::u32& height);
 
 		private:
-			HWND m_windowHandle;
-			HDC m_deviceContext;
-			HGLRC m_glContext;
+			EGLDisplay m_display;
+			EGLContext m_context;
+			EGLSurface m_surface;
+			EGL_DISPMANX_WINDOW_T m_window;
 
 			const char* m_title;
 			bool m_shouldClose;
