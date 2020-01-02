@@ -1,14 +1,10 @@
 #include "win_window.hpp"
 
-#include <GL/GL.h>
-#pragma comment (lib, "opengl32.lib")
-
+#include <gl/GL.h>
 //#include <d3d11.h>
-//#pragma comment (lib, "d3d11.lib")
 
-using namespace ove;
-using namespace core;
-using namespace system;
+using namespace ove::core;
+using namespace ove::system;
 
 win_window_t* pWindow = nullptr;
 
@@ -20,7 +16,7 @@ win_window_t::win_window_t()
 	m_deviceContext = NULL;
 	m_glContext = NULL;
 
-	m_title = nullptr;
+	m_title = "";
 	m_shouldClose = true;
 }
 
@@ -32,9 +28,9 @@ win_window_t::~win_window_t()
 	DestroyWindow(m_windowHandle);
 }
 
-bool win_window_t::create(const char* title, u32 width, u32 height)
+bool win_window_t::create(const window_config_t& config)
 {
-	m_title = title;
+	m_title = config.title;
 
 	int pf;
 	PIXELFORMATDESCRIPTOR pfd;
@@ -73,15 +69,12 @@ bool win_window_t::create(const char* title, u32 width, u32 height)
 		pWindow = this;
 	}
 
-	u32 x = 0;
-	u32 y = 0;
-
 	m_windowHandle = CreateWindowEx(
 		WS_EX_OVERLAPPEDWINDOW,
 		windowClassStr,
-		title,
+		config.title.c_str(),
 		WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
-		x, y, width, height,
+		config.x, config.y, config.width, config.height,
 		NULL,
 		NULL,
 		hInstance,
@@ -217,7 +210,7 @@ void win_window_t::setSize(u32 width, u32 height)
 
 const char* win_window_t::getTitle()
 {
-	return m_title;
+	return m_title.c_str();
 }
 
 void win_window_t::getSize(u32& width, u32& height)

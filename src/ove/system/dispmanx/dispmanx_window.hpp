@@ -7,14 +7,17 @@
 #include <EGL/eglext.h>
 #include <EGL/eglplatform.h>
 
-namespace ove {
-	namespace system {
-		struct dispmanx_window_t : public window_t {
+namespace ove
+{
+	namespace system
+	{
+		struct dispmanx_window_t : public window_t
+		{
 		public:
 			dispmanx_window_t();
 			~dispmanx_window_t();
 
-			virtual bool create(const char* title, core::u32 width, core::u32 height);
+			virtual bool create(const window_config_t& config);
 
 			virtual void close();
 
@@ -38,7 +41,7 @@ namespace ove {
 			EGLSurface m_surface;
 			EGL_DISPMANX_WINDOW_T m_window;
 
-			const char* m_title;
+			std::string m_title;
 			bool m_shouldClose;
 		};
 	}

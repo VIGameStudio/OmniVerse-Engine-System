@@ -10,7 +10,7 @@ namespace ove {
 			win_window_t();
 			~win_window_t();
 
-			virtual bool create(const char* title, core::u32 width, core::u32 height);
+			virtual bool create(const window_config_t& config);
 
 			virtual void close();
 
@@ -33,7 +33,7 @@ namespace ove {
 			HDC m_deviceContext;
 			HGLRC m_glContext;
 
-			const char* m_title;
+			std::string m_title;
 			bool m_shouldClose;
 		};
 	}

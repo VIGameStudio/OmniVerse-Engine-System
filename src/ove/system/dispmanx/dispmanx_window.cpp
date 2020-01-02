@@ -3,9 +3,8 @@
 #include <iostream>
 #include <GLES2/gl2.h>
 
-using namespace ove;
-using namespace core;
-using namespace system;
+using namespace ove::core;
+using namespace ove::system;
 
 dispmanx_window_t::dispmanx_window_t()
 {
@@ -20,9 +19,9 @@ dispmanx_window_t::~dispmanx_window_t()
 
 static const char* eglGetErrorStr();
 
-bool dispmanx_window_t::create(const char* title, u32 width, u32 height)
+bool dispmanx_window_t::create(const window_config_t& config)
 {
-	m_title = title;
+	m_title = config.title;
 
 	bcm_host_init();
 
@@ -33,7 +32,7 @@ bool dispmanx_window_t::create(const char* title, u32 width, u32 height)
 	VC_RECT_T dst_rect;
 	VC_RECT_T src_rect;
 
-	// Fullscreen
+	u32 width, height;
 	if (graphics_get_display_size(0, &width, &height) < 0)
 	{
 		std::cerr << "Failed to get display size!" << std::endl;
@@ -78,8 +77,8 @@ bool dispmanx_window_t::create(const char* title, u32 width, u32 height)
 		EGL_NONE
 	};
 
-	EGLConfig config;
-	EGLint num_config;
+	EGLConfig eglConfig;
+	EGLint elgNumConfig;
 
 	// Get an EGL display connection.
 	m_display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
@@ -102,7 +101,7 @@ bool dispmanx_window_t::create(const char* title, u32 width, u32 height)
 	std::cout << "Initialized EGL version: " << major << "." << minor << std::endl;
 
 	// Get an appropriate EGL frame buffer configuration.
-	if (eglChooseConfig(m_display, attribute_list, &config, 1, &num_config) != EGL_TRUE)
+	if (eglChooseConfig(m_display, attribute_list, &eglConfig, 1, &elgNumConfig) != EGL_TRUE)
 	{
 		std::cerr << "Failed to configure EGL!" << std::endl;
 		eglTerminate(m_display);
@@ -118,7 +117,7 @@ bool dispmanx_window_t::create(const char* title, u32 width, u32 height)
 	}
 
 	// Create an EGL rendering context.
-	m_context = eglCreateContext(m_display, config, EGL_NO_CONTEXT, context_attributes);
+	m_context = eglCreateContext(m_display, eglConfig, EGL_NO_CONTEXT, context_attributes);
 	if (m_context == EGL_NO_CONTEXT)
 	{
 		std::cerr << "Failed to create EGL context!" << std::endl;
@@ -133,7 +132,7 @@ bool dispmanx_window_t::create(const char* title, u32 width, u32 height)
 	m_window.height = height;
 	vc_dispmanx_update_submit_sync(dispman_update);
 
-	m_surface = eglCreateWindowSurface(m_display, config, &m_window, NULL);
+	m_surface = eglCreateWindowSurface(m_display, eglConfig, &m_window, NULL);
 	if (m_surface == EGL_NO_SURFACE)
 	{
 		std::cerr << "Failed to create EGL surface!" << std::endl;
@@ -225,9 +224,10 @@ void dispmanx_window_t::setSize(u32 width, u32 height)
 
 const char* dispmanx_window_t::getTitle()
 {
-	return nullptr;
+	return m_title.c_str();
 }
 
 void dispmanx_window_t::getSize(u32& width, u32& height)
 {
+	graphics_get_display_size(0, &width, &height);
 }

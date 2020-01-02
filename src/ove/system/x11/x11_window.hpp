@@ -15,7 +15,7 @@ namespace system {
 
     struct x11_window_t : public window_t {
     public:
-        virtual bool create(const char* title, unsigned int width, unsigned int height);
+        virtual bool create(const char* title, core::u32 width, core::u32 height);
 
         virtual void close();
 
@@ -27,11 +27,11 @@ namespace system {
 
         virtual void setTitle(const char* title);
 
-        virtual void setSize(unsigned int width, unsigned int height);
+        virtual void setSize(core::u32 width, core::u32 height);
 
         virtual const char* getTitle();
 
-        virtual void getSize(unsigned int& width, unsigned int& height);
+        virtual void getSize(core::u32& width, core::u32& height);
 
     private:
         Display* m_pDisplay;

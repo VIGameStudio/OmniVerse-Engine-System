@@ -3,9 +3,23 @@
 #include <ove/system/input.hpp>
 #include <ove/core/util/types.hpp>
 
-namespace ove {
-	namespace system {
-		struct window_t {
+#include <string>
+
+namespace ove
+{
+	namespace system
+	{
+		struct window_config_t
+		{
+			std::string title = "";
+			core::u32 x = 0, y = 0;
+			core::u32 width = 0, height = 0;
+			bool vsync = false;
+			core::u8 msaa = 0;
+		};
+
+		struct window_t
+		{
 		public:
 			typedef void (*window_close_fn)(window_t* win);
 
@@ -28,7 +42,7 @@ namespace ove {
 			typedef void (*window_char_fn)(window_t* win, core::u32 c);
 
 		public:
-			virtual bool create(const char* title, core::u32 width, core::u32 height) = 0;
+			virtual bool create(const window_config_t& config) = 0;
 
 			virtual void close() = 0;
 
@@ -68,25 +82,25 @@ namespace ove {
 			void setCharCallback(window_char_fn callback);
 
 		protected:
-			window_close_fn m_close_fn;
+			window_close_fn m_close_fn = nullptr;
 
-			window_focus_fn m_focus_fn;
+			window_focus_fn m_focus_fn = nullptr;
 
-			window_size_fn m_size_fn;
+			window_size_fn m_size_fn = nullptr;
 
-			window_pos_fn m_pos_fn;
+			window_pos_fn m_pos_fn = nullptr;
 
-			window_mouse_btn_fn m_mouse_btn_fn;
+			window_mouse_btn_fn m_mouse_btn_fn = nullptr;
 
-			window_cursor_pos_fn m_cursor_pos_fn;
+			window_cursor_pos_fn m_cursor_pos_fn = nullptr;
 
-			window_cursor_enter_fn m_cursor_enter_fn;
+			window_cursor_enter_fn m_cursor_enter_fn = nullptr;
 
-			window_scroll_fn m_scroll_fn;
+			window_scroll_fn m_scroll_fn = nullptr;
 
-			window_key_fn m_key_fn;
+			window_key_fn m_key_fn = nullptr;
 
-			window_char_fn m_char_fn;
+			window_char_fn m_char_fn = nullptr;
 		};
 	}
 }
