@@ -1,14 +1,78 @@
 #include "win_window.hpp"
 
+#include <ove/system/input.hpp>
+#include <ove/system/win/win_input.hpp>
+
+#include <array>
+
 #include <gl/GL.h>
 //#include <d3d11.h>
 
 using namespace ove::core;
 using namespace ove::system;
 
-win_window_t* pWindow = nullptr;
+std::array<u8, 0xff> createKeycodeMap()
+{
+	std::array<u8, 0xff> map;
 
-LONG WINAPI WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+	map[WIN_KB_A] = KB_A;
+	map[WIN_KB_B] = KB_B;
+	map[WIN_KB_C] = KB_C;
+	map[WIN_KB_D] = KB_D;
+	map[WIN_KB_E] = KB_E;
+	map[WIN_KB_F] = KB_F;
+	map[WIN_KB_G] = KB_G;
+	map[WIN_KB_H] = KB_H;
+	map[WIN_KB_I] = KB_I;
+	map[WIN_KB_J] = KB_J;
+	map[WIN_KB_K] = KB_K;
+	map[WIN_KB_L] = KB_L;
+	map[WIN_KB_M] = KB_M;
+	map[WIN_KB_N] = KB_N;
+	map[WIN_KB_O] = KB_O;
+	map[WIN_KB_P] = KB_P;
+	map[WIN_KB_Q] = KB_Q;
+	map[WIN_KB_R] = KB_R;
+	map[WIN_KB_S] = KB_S;
+	map[WIN_KB_T] = KB_T;
+	map[WIN_KB_U] = KB_U;
+	map[WIN_KB_V] = KB_V;
+	map[WIN_KB_W] = KB_W;
+	map[WIN_KB_X] = KB_X;
+	map[WIN_KB_Y] = KB_Y;
+	map[WIN_KB_Z] = KB_Z;
+
+	map[WIN_KB_0] = KB_0;
+	map[WIN_KB_1] = KB_1;
+	map[WIN_KB_2] = KB_2;
+	map[WIN_KB_3] = KB_3;
+	map[WIN_KB_4] = KB_4;
+	map[WIN_KB_5] = KB_5;
+	map[WIN_KB_6] = KB_6;
+	map[WIN_KB_7] = KB_7;
+	map[WIN_KB_8] = KB_8;
+	map[WIN_KB_9] = KB_9;
+
+	map[WIN_KB_RIGHT] = KB_RIGHT;
+	map[WIN_KB_LEFT] = KB_LEFT;
+	map[WIN_KB_DOWN] = KB_DOWN;
+	map[WIN_KB_UP] = KB_UP;
+
+	map[WIN_KB_LEFTCTRL] = KB_LEFTCTRL;
+	map[WIN_KB_LEFTSHIFT] = KB_LEFTSHIFT;
+	map[WIN_KB_LEFTALT] = KB_LEFTALT;
+	map[WIN_KB_RIGHTCTRL] = KB_RIGHTCTRL;
+	map[WIN_KB_RIGHTSHIFT] = KB_RIGHTSHIFT;
+	map[WIN_KB_RIGHTALT] = KB_RIGHTALT;
+
+	return map;
+}
+
+u8 convertKeycode(u8 k)
+{
+	static std::array<u8, 0xff> s_kcmap = createKeycodeMap();
+	return s_kcmap[k];
+}
 
 win_window_t::win_window_t()
 {
@@ -27,6 +91,8 @@ win_window_t::~win_window_t()
 	wglDeleteContext(m_glContext);
 	DestroyWindow(m_windowHandle);
 }
+
+LONG WINAPI WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 bool win_window_t::create(const window_config_t& config)
 {
@@ -55,18 +121,13 @@ bool win_window_t::create(const window_config_t& config)
 		wc.lpszClassName = windowClassStr;
 		wc.lpszMenuName = "";
 		wc.style = CS_OWNDC;
-		wc.lpfnWndProc = (WNDPROC)WindowProc;
+		wc.lpfnWndProc = (WNDPROC)WndProc;
 
 		if (!RegisterClassEx(&wc))
 		{
 			MessageBox(NULL, "RegisterClassEx() failed: Cannot register window class.", "Error", MB_OK);
 			return false;
 		}
-	}
-
-	if (pWindow == nullptr)
-	{
-		pWindow = this;
 	}
 
 	m_windowHandle = CreateWindowEx(
@@ -85,6 +146,8 @@ bool win_window_t::create(const window_config_t& config)
 		MessageBox(NULL, "CreateWindow() failed: Cannot create a window.", "Error", MB_OK);
 		return false;
 	}
+
+	SetWindowLongPtr(m_windowHandle, GWLP_USERDATA, (long)this);
 
 	m_deviceContext = GetDC(m_windowHandle);
 
@@ -125,46 +188,67 @@ bool win_window_t::create(const window_config_t& config)
 	return true;
 }
 
-LONG WINAPI WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+LONG WINAPI WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+	win_window_t* win = reinterpret_cast<win_window_t*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
+	if (win) return win->wndProc(hWnd, uMsg, wParam, lParam);
+	return DefWindowProc(hWnd, uMsg, wParam, lParam);
+}
+
+LONG WINAPI win_window_t::wndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	static PAINTSTRUCT ps;
 
 	switch (uMsg)
 	{
-	case WM_PAINT:
-		//glClearColor(1, 0, 0, 1);
-		//glClear(GL_COLOR_BUFFER_BIT);
-
-		BeginPaint(hWnd, &ps);
-		EndPaint(hWnd, &ps);
-		return 0;
-
 	case WM_SIZE:
-		//glViewport(0, 0, LOWORD(lParam), HIWORD(lParam));
-
+		// width: LOWORD(lParam), height: HIWORD(lParam)
 		PostMessage(hWnd, WM_PAINT, 0, 0);
 		return 0;
 
 	case WM_CHAR:
-		switch (wParam)
-		{
-		case 27: // ESC key
-			pWindow->close();
-			PostQuitMessage(0);
-			break;
-		}
+		return 0;
+
+	case WM_KEYDOWN:
+		m_keys[convertKeycode(wParam)] = true;
+		return 0;
+
+	case WM_KEYUP:
+		m_keys[convertKeycode(wParam)] = false;
 		return 0;
 
 	case WM_LBUTTONDOWN:
+		m_buttons[MBTN_LEFT] = true;
+		return 0;
+
+	case WM_MBUTTONDOWN:
+		m_buttons[MBTN_MIDDLE] = true;
+		return 0;
+
+	case WM_RBUTTONDOWN:
+		m_buttons[MBTN_RIGHT] = true;
+		return 0;
+
+	case WM_LBUTTONUP:
+		m_buttons[MBTN_LEFT] = false;
+		return 0;
+
+	case WM_MBUTTONUP:
+		m_buttons[MBTN_MIDDLE] = false;
+		return 0;
+
+	case WM_RBUTTONUP:
+		m_buttons[MBTN_RIGHT] = false;
+		return 0;
+
+	case WM_MOUSEMOVE:
+		m_mouseX = LOWORD(lParam);
+		m_mouseY = HIWORD(lParam);
 		return 0;
 
 	case WM_CLOSE:
-		pWindow->close();
-		PostQuitMessage(0);
-		return 0;
-
 	case WM_DESTROY:
-		pWindow->close();
+		close();
 		PostQuitMessage(0);
 		return 0;
 	}

@@ -28,6 +28,9 @@ namespace ove {
 
 			virtual void getSize(core::u32& width, core::u32& height);
 
+		public:
+			LONG WINAPI wndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
 		private:
 			HWND m_windowHandle;
 			HDC m_deviceContext;

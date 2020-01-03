@@ -12,8 +12,10 @@ namespace ove
 		struct window_config_t
 		{
 			std::string title = "";
-			core::u32 x = 0, y = 0;
-			core::u32 width = 0, height = 0;
+			core::u32 x = 0;
+			core::u32 y = 0;
+			core::u32 width = 0;
+			core::u32 height = 0;
 			bool vsync = false;
 			core::u8 msaa = 0;
 		};
@@ -35,9 +37,9 @@ namespace ove
 
 			typedef void (*window_cursor_enter_fn)(window_t* win, bool entered);
 
-			typedef void (*window_scroll_fn)(window_t* win, core::f64 xoff, core::f64 yoff);
+			typedef void (*window_scroll_fn)(window_t* win, core::f64 dt);
 
-			typedef void (*window_key_fn)(window_t* win, core::i32 key, core::i32 scanCode, core::i32 action, core::i32 mods);
+			typedef void (*window_key_fn)(window_t* win, core::u8 key);
 
 			typedef void (*window_char_fn)(window_t* win, core::u32 c);
 
@@ -81,6 +83,12 @@ namespace ove
 
 			void setCharCallback(window_char_fn callback);
 
+			inline bool isKeyDown(core::u16 keycode) const { return m_keys[keycode]; }
+
+			inline bool isButtonDown(core::u8 button) const { return m_buttons[button]; }
+
+			inline void getMousePos(core::i32& x, core::i32& y) const { x = m_mouseX; y = m_mouseY; }
+
 		protected:
 			window_close_fn m_close_fn = nullptr;
 
@@ -101,6 +109,14 @@ namespace ove
 			window_key_fn m_key_fn = nullptr;
 
 			window_char_fn m_char_fn = nullptr;
+
+			core::u8 m_keys[KEYS_STATE_MAXSIZE] = { 0 };
+
+			core::u8 m_buttons[BUTTON_STATE_MAXSIZE] = { 0 };
+
+			core::i32 m_mouseX = 0;
+
+			core::i32 m_mouseY = 0;
 		};
 	}
 }

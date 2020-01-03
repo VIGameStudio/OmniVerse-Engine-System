@@ -2,83 +2,75 @@
 
 #include <ove/core/util/types.hpp>
 
+#include <windows.h>
+
 namespace ove
 {
 	namespace system
 	{
-		constexpr core::u8 KEYS_STATE_MAXSIZE = 0xff; // Max size of key states.
+		//constexpr core::u8 KB_KEYNONE = 0x00; // No key pressed
 
-		constexpr core::u8 BUTTON_STATE_MAXSIZE = 0x05; // Max size of mouse button states.
+		//constexpr core::u8 KB_ERR_ROLLOVER = 0x01; // Keyboard Error Roll Over
+		//constexpr core::u8 KB_POST_FAIL = 0x02; // Keyboard POST Fail
+		//constexpr core::u8 KB_ERR_UNDEFINED = 0x03; // Keyboard Error Undefined
 
-		constexpr core::u8 MBTN_LEFT = 0x01; // Mouse button left
-		constexpr core::u8 MBTN_MIDDLE = 0x02; // Mouse button middle
-		constexpr core::u8 MBTN_RIGHT = 0x03; // Mouse button right
+		constexpr core::u8 WIN_KB_A = 0x41; // Keyboard a and A
+		constexpr core::u8 WIN_KB_B = 0x42; // Keyboard b and B
+		constexpr core::u8 WIN_KB_C = 0x43; // Keyboard c and C
+		constexpr core::u8 WIN_KB_D = 0x44; // Keyboard d and D
+		constexpr core::u8 WIN_KB_E = 0x45; // Keyboard e and E
+		constexpr core::u8 WIN_KB_F = 0x46; // Keyboard f and F
+		constexpr core::u8 WIN_KB_G = 0x47; // Keyboard g and G
+		constexpr core::u8 WIN_KB_H = 0x48; // Keyboard h and H
+		constexpr core::u8 WIN_KB_I = 0x49; // Keyboard i and I
+		constexpr core::u8 WIN_KB_J = 0x4a; // Keyboard j and J
+		constexpr core::u8 WIN_KB_K = 0x4b; // Keyboard k and K
+		constexpr core::u8 WIN_KB_L = 0x4c; // Keyboard l and L
+		constexpr core::u8 WIN_KB_M = 0x4d; // Keyboard m and M
+		constexpr core::u8 WIN_KB_N = 0x4e; // Keyboard n and N
+		constexpr core::u8 WIN_KB_O = 0x4f; // Keyboard o and O
+		constexpr core::u8 WIN_KB_P = 0x50; // Keyboard p and P
+		constexpr core::u8 WIN_KB_Q = 0x51; // Keyboard q and Q
+		constexpr core::u8 WIN_KB_R = 0x52; // Keyboard r and R
+		constexpr core::u8 WIN_KB_S = 0x53; // Keyboard s and S
+		constexpr core::u8 WIN_KB_T = 0x54; // Keyboard t and T
+		constexpr core::u8 WIN_KB_U = 0x55; // Keyboard u and U
+		constexpr core::u8 WIN_KB_V = 0x56; // Keyboard v and V
+		constexpr core::u8 WIN_KB_W = 0x57; // Keyboard w and W
+		constexpr core::u8 WIN_KB_X = 0x58; // Keyboard x and X
+		constexpr core::u8 WIN_KB_Y = 0x59; // Keyboard y and Y
+		constexpr core::u8 WIN_KB_Z = 0x5A; // Keyboard z and Z
 
-		// https://source.android.com/devices/input/keyboard-devices.html
+		constexpr core::u8 WIN_KB_1 = 0x1e; // Keyboard 1 and !
+		constexpr core::u8 WIN_KB_2 = 0x1f; // Keyboard 2 and @
+		constexpr core::u8 WIN_KB_3 = 0x20; // Keyboard 3 and #
+		constexpr core::u8 WIN_KB_4 = 0x21; // Keyboard 4 and $
+		constexpr core::u8 WIN_KB_5 = 0x22; // Keyboard 5 and %
+		constexpr core::u8 WIN_KB_6 = 0x23; // Keyboard 6 and ^
+		constexpr core::u8 WIN_KB_7 = 0x24; // Keyboard 7 and &
+		constexpr core::u8 WIN_KB_8 = 0x25; // Keyboard 8 and *
+		constexpr core::u8 WIN_KB_9 = 0x26; // Keyboard 9 and (
+		constexpr core::u8 WIN_KB_0 = 0x27; // Keyboard 0 and )
 
-		constexpr core::u8 KB_KEYNONE = 0x00; // No key pressed
-
-		constexpr core::u8 KB_ERR_ROLLOVER = 0x01; // Keyboard Error Roll Over
-		constexpr core::u8 KB_POST_FAIL = 0x02; // Keyboard POST Fail
-		constexpr core::u8 KB_ERR_UNDEFINED = 0x03; // Keyboard Error Undefined
-
-		constexpr core::u8 KB_A = 0x04; // Keyboard a and A
-		constexpr core::u8 KB_B = 0x05; // Keyboard b and B
-		constexpr core::u8 KB_C = 0x06; // Keyboard c and C
-		constexpr core::u8 KB_D = 0x07; // Keyboard d and D
-		constexpr core::u8 KB_E = 0x08; // Keyboard e and E
-		constexpr core::u8 KB_F = 0x09; // Keyboard f and F
-		constexpr core::u8 KB_G = 0x0a; // Keyboard g and G
-		constexpr core::u8 KB_H = 0x0b; // Keyboard h and H
-		constexpr core::u8 KB_I = 0x0c; // Keyboard i and I
-		constexpr core::u8 KB_J = 0x0d; // Keyboard j and J
-		constexpr core::u8 KB_K = 0x0e; // Keyboard k and K
-		constexpr core::u8 KB_L = 0x0f; // Keyboard l and L
-		constexpr core::u8 KB_M = 0x10; // Keyboard m and M
-		constexpr core::u8 KB_N = 0x11; // Keyboard n and N
-		constexpr core::u8 KB_O = 0x12; // Keyboard o and O
-		constexpr core::u8 KB_P = 0x13; // Keyboard p and P
-		constexpr core::u8 KB_Q = 0x14; // Keyboard q and Q
-		constexpr core::u8 KB_R = 0x15; // Keyboard r and R
-		constexpr core::u8 KB_S = 0x16; // Keyboard s and S
-		constexpr core::u8 KB_T = 0x17; // Keyboard t and T
-		constexpr core::u8 KB_U = 0x18; // Keyboard u and U
-		constexpr core::u8 KB_V = 0x19; // Keyboard v and V
-		constexpr core::u8 KB_W = 0x1a; // Keyboard w and W
-		constexpr core::u8 KB_X = 0x1b; // Keyboard x and X
-		constexpr core::u8 KB_Y = 0x1c; // Keyboard y and Y
-		constexpr core::u8 KB_Z = 0x1d; // Keyboard z and Z
-
-		constexpr core::u8 KB_1 = 0x1e; // Keyboard 1 and !
-		constexpr core::u8 KB_2 = 0x1f; // Keyboard 2 and @
-		constexpr core::u8 KB_3 = 0x20; // Keyboard 3 and #
-		constexpr core::u8 KB_4 = 0x21; // Keyboard 4 and $
-		constexpr core::u8 KB_5 = 0x22; // Keyboard 5 and %
-		constexpr core::u8 KB_6 = 0x23; // Keyboard 6 and ^
-		constexpr core::u8 KB_7 = 0x24; // Keyboard 7 and &
-		constexpr core::u8 KB_8 = 0x25; // Keyboard 8 and *
-		constexpr core::u8 KB_9 = 0x26; // Keyboard 9 and (
-		constexpr core::u8 KB_0 = 0x27; // Keyboard 0 and )
-
-		constexpr core::u8 KB_ENTER = 0x28; // Keyboard Return (ENTER)
-		constexpr core::u8 KB_ESCAPE = 0x29; // Keyboard ESCAPE
-		constexpr core::u8 KB_BACK = 0x04; // KEYCODE_BACK
-		constexpr core::u8 KB_DELETE = 0x2a; // Keyboard DELETE (Backspace)
-		constexpr core::u8 KB_TAB = 0x2b; // Keyboard Tab
-		constexpr core::u8 KB_SPACE = 0x2c; // Keyboard Spacebar
-		constexpr core::u8 KB_MINUS = 0x2d; // Keyboard - and _
-		constexpr core::u8 KB_EQUAL = 0x2e; // Keyboard = and +
-		constexpr core::u8 KB_LEFTBRACE = 0x2f; // Keyboard [ and {
-		constexpr core::u8 KB_RRIGHTBRACE = 0x30; // Keyboard ] and }
-		constexpr core::u8 KB_BACKSLASH = 0x31; // Keyboard \ and |
-		constexpr core::u8 KB_HASHTILDE = 0x32; // Keyboard Non-US # and ~
-		constexpr core::u8 KB_SEMICOLON = 0x33; // Keyboard ; and :
-		constexpr core::u8 KB_APOSTROPHE = 0x34; // Keyboard ' and "
-		constexpr core::u8 KB_GRAVE = 0x35; // Keyboard ` and ~
-		constexpr core::u8 KB_COMMA = 0x36; // Keyboard , and <
-		constexpr core::u8 KB_DOT = 0x37; // Keyboard .and >
-		constexpr core::u8 KB_SLASH = 0x38; // Keyboard / and ?
-		constexpr core::u8 KB_CAPSLOCK = 0x39; // Keyboard Caps Lock
+		constexpr core::u8 WIN_KB_ENTER = 0x28; // Keyboard Return (ENTER)
+		constexpr core::u8 WIN_KB_ESCAPE = 0x29; // Keyboard ESCAPE
+		constexpr core::u8 WIN_KB_BACK = 0x04; // KEYCODE_BACK
+		constexpr core::u8 WIN_KB_DELETE = 0x2a; // Keyboard DELETE (Backspace)
+		constexpr core::u8 WIN_KB_TAB = 0x2b; // Keyboard Tab
+		constexpr core::u8 WIN_KB_SPACE = 0x2c; // Keyboard Spacebar
+		constexpr core::u8 WIN_KB_MINUS = 0x2d; // Keyboard - and _
+		constexpr core::u8 WIN_KB_EQUAL = 0x2e; // Keyboard = and +
+		constexpr core::u8 WIN_KB_LEFTBRACE = 0x2f; // Keyboard [ and {
+		constexpr core::u8 WIN_KB_RRIGHTBRACE = 0x30; // Keyboard ] and }
+		constexpr core::u8 WIN_KB_BACKSLASH = 0x31; // Keyboard \ and |
+		constexpr core::u8 WIN_KB_HASHTILDE = 0x32; // Keyboard Non-US # and ~
+		constexpr core::u8 WIN_KB_SEMICOLON = 0x33; // Keyboard ; and :
+		constexpr core::u8 WIN_KB_APOSTROPHE = 0x34; // Keyboard ' and "
+		constexpr core::u8 WIN_KB_GRAVE = 0x35; // Keyboard ` and ~
+		constexpr core::u8 WIN_KB_COMMA = 0x36; // Keyboard , and <
+		constexpr core::u8 WIN_KB_DOT = 0x37; // Keyboard .and >
+		constexpr core::u8 WIN_KB_SLASH = 0x38; // Keyboard / and ?
+		constexpr core::u8 WIN_KB_CAPSLOCK = 0x39; // Keyboard Caps Lock
 
 		//0x07 0x003a	Keyboard F1	0x003b	KEY_F1	3.0	0x0083	KEYCODE_F1
 		//""	""	""	""	1.6	0x0052	KEYCODE_MENU
@@ -109,10 +101,10 @@ namespace ove
 		//""	""	""	""	1.6	0x0006	KEYCODE_ENDCALL
 		//0x07 0x004e	Keyboard Page Down	0x006d	KEY_PAGEDOWN	3.0	0x005d	KEYCODE_PAGE_DOWN
 
-		constexpr core::u8 KB_RIGHT = 0x4f; // Keyboard Right Arrow
-		constexpr core::u8 KB_LEFT = 0x50; // Keyboard Left Arrow
-		constexpr core::u8 KB_DOWN = 0x51; // Keyboard Down Arrow
-		constexpr core::u8 KB_UP = 0x52; // Keyboard Up Arrow
+		constexpr core::u8 WIN_KB_RIGHT = VK_RIGHT; // Keyboard Right Arrow
+		constexpr core::u8 WIN_KB_LEFT = VK_LEFT; // Keyboard Left Arrow
+		constexpr core::u8 WIN_KB_DOWN = VK_DOWN; // Keyboard Down Arrow
+		constexpr core::u8 WIN_KB_UP = VK_UP; // Keyboard Up Arrow
 
 		//0x07 0x0053	Keyboard Num Lock and Clear	0x0045	KEY_NUMLOCK	3.0	0x008f	KEYCODE_NUM_LOCK
 
@@ -251,14 +243,14 @@ namespace ove
 		//0x07 0x00dc	Keypad Decimal
 		//0x07 0x00dd	Keypad Hexadecimal
 
-		constexpr core::u8 KB_LEFTCTRL = 0xe0; // Keyboard Left Control
-		constexpr core::u8 KB_LEFTSHIFT = 0xe1; // Keyboard Left Shift
-		constexpr core::u8 KB_LEFTALT = 0xe2; // Keyboard Left Alt
-		constexpr core::u8 KB_LEFTMETA = 0xe3; // Keyboard Left GUI
-		constexpr core::u8 KB_RIGHTCTRL = 0xe4; // Keyboard Right Control
-		constexpr core::u8 KB_RIGHTSHIFT = 0xe5; // Keyboard Right Shift
-		constexpr core::u8 KB_RIGHTALT = 0xe6; // Keyboard Right Alt
-		constexpr core::u8 KB_RIGHTMETA = 0xe7; // Keyboard Right GUI
+		constexpr core::u8 WIN_KB_LEFTCTRL = VK_LCONTROL; // Keyboard Left Control
+		constexpr core::u8 WIN_KB_LEFTSHIFT = VK_LSHIFT; // Keyboard Left Shift
+		constexpr core::u8 WIN_KB_LEFTALT = VK_LMENU; // Keyboard Left Alt
+		//constexpr core::u8 WIN_KB_LEFTMETA = 0xe3; // Keyboard Left GUI
+		constexpr core::u8 WIN_KB_RIGHTCTRL = VK_RCONTROL; // Keyboard Right Control
+		constexpr core::u8 WIN_KB_RIGHTSHIFT = VK_RSHIFT; // Keyboard Right Shift
+		constexpr core::u8 WIN_KB_RIGHTALT = VK_RMENU; // Keyboard Right Alt
+		//constexpr core::u8 WIN_KB_RIGHTMETA = 0xe7; // Keyboard Right GUI
 
 		//0x07 0x00e8		0x00a4	KEY_PLAYPAUSE	3.0	0x0055	KEYCODE_MEDIA_PLAY_PAUSE
 		//0x07 0x00e9		0x00a6	KEY_STOPCD	3.0	0x0056	KEYCODE_MEDIA_STOP
