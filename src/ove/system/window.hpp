@@ -4,6 +4,7 @@
 #include <ove/core/util/types.hpp>
 
 #include <string>
+#include <functional>
 
 namespace ove
 {
@@ -23,25 +24,25 @@ namespace ove
 		struct window_t
 		{
 		public:
-			typedef void (*window_close_fn)(window_t* win);
+			using window_close_fn = std::function<void(window_t * pWin)>;
 
-			typedef void (*window_focus_fn)(window_t* win, bool focused);
+			using window_focus_fn = std::function<void(window_t * pWin, bool focused)>;
 
-			typedef void (*window_size_fn)(window_t* win, core::u32 w, core::u32 h);
+			using window_size_fn = std::function<void(window_t * pWin, core::u32 w, core::u32 h)>;
 
-			typedef void (*window_pos_fn)(window_t* win, core::u32 xpos, core::u32 ypos);
+			using window_pos_fn = std::function<void(window_t * pWin, core::u32 xpos, core::u32 ypos)>;
 
-			typedef void (*window_mouse_btn_fn)(window_t* win, core::i32 button, core::i32 action, core::i32 mods);
+			using window_mouse_btn_fn = std::function<void(window_t*, core::i32 button, core::i32 action, core::i32 mods)>;
 
-			typedef void (*window_cursor_pos_fn)(window_t* win, core::f64 xpos, core::f64 ypos);
+			using window_cursor_pos_fn = std::function<void(window_t * pWin, core::f64 xpos, core::f64 ypos)>;
 
-			typedef void (*window_cursor_enter_fn)(window_t* win, bool entered);
+			using window_cursor_enter_fn = std::function<void(window_t * pWin, bool entered)>;
 
-			typedef void (*window_scroll_fn)(window_t* win, core::f64 dt);
+			using window_scroll_fn = std::function<void(window_t * pWin, core::f64 dt)>;
 
-			typedef void (*window_key_fn)(window_t* win, core::u8 key);
+			using window_key_fn = std::function<void(window_t * pWin, core::u8 key)>;
 
-			typedef void (*window_char_fn)(window_t* win, core::u32 c);
+			using window_char_fn = std::function<void(window_t * pWin, core::u32 c)>;
 
 		public:
 			virtual bool create(const window_config_t& config) = 0;
@@ -90,25 +91,25 @@ namespace ove
 			inline void getMousePos(core::i32& x, core::i32& y) const { x = m_mouseX; y = m_mouseY; }
 
 		protected:
-			window_close_fn m_close_fn = nullptr;
+			window_close_fn m_close_fn;
 
-			window_focus_fn m_focus_fn = nullptr;
+			window_focus_fn m_focus_fn;
 
-			window_size_fn m_size_fn = nullptr;
+			window_size_fn m_size_fn;
 
-			window_pos_fn m_pos_fn = nullptr;
+			window_pos_fn m_pos_fn;
 
-			window_mouse_btn_fn m_mouse_btn_fn = nullptr;
+			window_mouse_btn_fn m_mouse_btn_fn;
 
-			window_cursor_pos_fn m_cursor_pos_fn = nullptr;
+			window_cursor_pos_fn m_cursor_pos_fn;
 
-			window_cursor_enter_fn m_cursor_enter_fn = nullptr;
+			window_cursor_enter_fn m_cursor_enter_fn;
 
-			window_scroll_fn m_scroll_fn = nullptr;
+			window_scroll_fn m_scroll_fn;
 
-			window_key_fn m_key_fn = nullptr;
+			window_key_fn m_key_fn;
 
-			window_char_fn m_char_fn = nullptr;
+			window_char_fn m_char_fn;
 
 			core::u8 m_keys[KEYS_STATE_MAXSIZE] = { 0 };
 

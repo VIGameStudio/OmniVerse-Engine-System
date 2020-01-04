@@ -3,9 +3,13 @@
 #include <ove/system/input.hpp>
 #include <ove/system/win/win_input.hpp>
 
+#include <iostream>
 #include <array>
 
-#include <gl/GL.h>
+//#include <gl/GL.h>
+#include <glad/glad.h>
+//#include <glad/glad_wgl.h>
+
 //#include <d3d11.h>
 
 using namespace ove::core;
@@ -175,8 +179,31 @@ bool win_window_t::create(const window_config_t& config)
 
 	DescribePixelFormat(m_deviceContext, pf, sizeof(PIXELFORMATDESCRIPTOR), &pfd);
 
+	/*GLint attribs[] =
+	{
+		// Here we ask for OpenGL 3.3
+		WGL_CONTEXT_MAJOR_VERSION_ARB, 3,
+		WGL_CONTEXT_MINOR_VERSION_ARB, 3,
+		// Uncomment this for forward compatibility mode
+		//WGL_CONTEXT_FLAGS_ARB, WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB,
+		// Uncomment this for Compatibility profile
+		//WGL_CONTEXT_PROFILE_MASK_ARB, WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB,
+		// We are using Core profile here
+		WGL_CONTEXT_PROFILE_MASK_ARB, WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
+		0
+	};
+
+	m_glContext = wglCreateContextAttribsARB(m_deviceContext, 0, attribs);*/
 	m_glContext = wglCreateContext(m_deviceContext);
 	wglMakeCurrent(m_deviceContext, m_glContext);
+
+	if (!gladLoadGL())
+	{
+		printf("Failed to load glad!\n");
+		return false;
+	}
+
+	std::cout << "OpenGL version: " << glGetString(GL_VERSION) << std::endl;
 
 	ReleaseDC(m_windowHandle, m_deviceContext);
 
@@ -202,7 +229,11 @@ LONG WINAPI win_window_t::wndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
 	switch (uMsg)
 	{
 	case WM_SIZE:
-		// width: LOWORD(lParam), height: HIWORD(lParam)
+		if (m_size_fn != nullptr)
+		{
+			m_size_fn(this, LOWORD(lParam), HIWORD(lParam));
+		}
+		glViewport(0, 0, LOWORD(lParam), HIWORD(lParam));
 		PostMessage(hWnd, WM_PAINT, 0, 0);
 		return 0;
 
@@ -299,13 +330,10 @@ const char* win_window_t::getTitle()
 
 void win_window_t::getSize(u32& width, u32& height)
 {
-	/*RECT rc;
-
-	GetClientRect(m_windowHandle, &rc);
-	width = rc.right - rc.left;
-	height = rc.bottom - rc.top;
-
-	GetWindowRect(m_windowHandle, &rc);
-	width = rc.right - rc.left;
-	height = rc.bottom - rc.top;*/
+	RECT rect;
+	if (GetWindowRect(m_windowHandle, &rect))//GetClientRect(m_windowHandle, &rect))
+	{
+		width = rect.right - rect.left;
+		height = rect.bottom - rect.top;
+	}
 }
