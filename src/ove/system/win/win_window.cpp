@@ -233,7 +233,6 @@ LONG WINAPI win_window_t::wndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
 		{
 			m_size_fn(this, LOWORD(lParam), HIWORD(lParam));
 		}
-		glViewport(0, 0, LOWORD(lParam), HIWORD(lParam));
 		PostMessage(hWnd, WM_PAINT, 0, 0);
 		return 0;
 
