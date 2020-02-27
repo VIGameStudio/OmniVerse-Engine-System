@@ -3,8 +3,10 @@
 #include <ove/system/window.hpp>
 #include <windows.h>
 
-namespace ove {
-	namespace system {
+namespace ove
+{
+	namespace system
+	{
 		struct win_window_t : public window_t {
 		public:
 			win_window_t();
@@ -24,9 +26,9 @@ namespace ove {
 
 			virtual void setSize(core::u32 width, core::u32 height);
 
-			virtual const char* getTitle();
+			virtual const char* getTitle() const;
 
-			virtual void getSize(core::u32& width, core::u32& height);
+			virtual void getSize(core::u32& width, core::u32& height) const;
 
 		public:
 			LONG WINAPI wndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);

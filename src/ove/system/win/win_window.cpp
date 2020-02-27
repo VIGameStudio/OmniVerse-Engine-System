@@ -257,43 +257,90 @@ LONG WINAPI win_window_t::wndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
 		return 0;
 
 	case WM_CHAR:
+		if (m_char_fn != nullptr)
+		{
+			m_char_fn(this, wParam);
+		}
 		return 0;
 
 	case WM_KEYDOWN:
 		m_keys[convertKeycode(wParam)] = true;
+		if (m_key_fn != nullptr)
+		{
+			m_key_fn(this, convertKeycode(wParam), true);
+		}
 		return 0;
 
 	case WM_KEYUP:
 		m_keys[convertKeycode(wParam)] = false;
+		if (m_key_fn != nullptr)
+		{
+			m_key_fn(this, convertKeycode(wParam), false);
+		}
 		return 0;
 
 	case WM_LBUTTONDOWN:
 		m_buttons[MBTN_LEFT] = true;
+		if (m_mouse_btn_fn != nullptr)
+		{
+			m_mouse_btn_fn(this, MBTN_LEFT, true);
+		}
 		return 0;
 
 	case WM_MBUTTONDOWN:
 		m_buttons[MBTN_MIDDLE] = true;
+		if (m_mouse_btn_fn != nullptr)
+		{
+			m_mouse_btn_fn(this, MBTN_MIDDLE, true);
+		}
 		return 0;
 
 	case WM_RBUTTONDOWN:
 		m_buttons[MBTN_RIGHT] = true;
+		if (m_mouse_btn_fn != nullptr)
+		{
+			m_mouse_btn_fn(this, MBTN_RIGHT, true);
+		}
 		return 0;
 
 	case WM_LBUTTONUP:
 		m_buttons[MBTN_LEFT] = false;
+		if (m_mouse_btn_fn != nullptr)
+		{
+			m_mouse_btn_fn(this, MBTN_LEFT, false);
+		}
 		return 0;
 
 	case WM_MBUTTONUP:
 		m_buttons[MBTN_MIDDLE] = false;
+		if (m_mouse_btn_fn != nullptr)
+		{
+			m_mouse_btn_fn(this, MBTN_MIDDLE, false);
+		}
 		return 0;
 
 	case WM_RBUTTONUP:
 		m_buttons[MBTN_RIGHT] = false;
+		if (m_mouse_btn_fn != nullptr)
+		{
+			m_mouse_btn_fn(this, MBTN_RIGHT, false);
+		}
 		return 0;
 
 	case WM_MOUSEMOVE:
 		m_mouseX = LOWORD(lParam);
 		m_mouseY = HIWORD(lParam);
+		if (m_cursor_pos_fn != nullptr)
+		{
+			m_cursor_pos_fn(this, m_mouseX, m_mouseY);
+		}
+		return 0;
+
+	case WM_MOUSEWHEEL:
+		if (m_scroll_fn != nullptr)
+		{
+			m_scroll_fn(this, 0, (((int)wParam) >> 16) / WHEEL_DELTA);
+		}
 		return 0;
 
 	case WM_CLOSE:
@@ -309,6 +356,10 @@ LONG WINAPI win_window_t::wndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
 void win_window_t::close()
 {
 	m_shouldClose = true;
+	if (m_close_fn != nullptr)
+	{
+		m_close_fn(this);
+	}
 }
 
 bool win_window_t::shouldClose()
@@ -342,15 +393,15 @@ void win_window_t::setSize(u32 width, u32 height)
 {
 }
 
-const char* win_window_t::getTitle()
+const char* win_window_t::getTitle() const
 {
 	return m_title.c_str();
 }
 
-void win_window_t::getSize(u32& width, u32& height)
+void win_window_t::getSize(u32& width, u32& height) const
 {
 	RECT rect;
-	if (GetWindowRect(m_windowHandle, &rect))//GetClientRect(m_windowHandle, &rect))
+	if (GetClientRect(m_windowHandle, &rect))
 	{
 		width = rect.right - rect.left;
 		height = rect.bottom - rect.top;

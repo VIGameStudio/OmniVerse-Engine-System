@@ -21,6 +21,30 @@ namespace ove
 			core::u8 msaa = 0;
 		};
 
+		struct input_receiver_t
+		{
+		protected:
+			virtual void onWindowClose(struct window_t* pWin) = 0;
+
+			virtual void onWindowFocus(struct window_t* pWin, bool focused) = 0;
+
+			virtual void onWindowSize(struct window_t* pWin, core::u32 w, core::u32 h) = 0;
+
+			virtual void onWindowPos(struct window_t* pWin, core::u32 xpos, core::u32 ypos) = 0;
+
+			virtual void onWindowMouseBtn(struct window_t* pWin, core::u8 button, bool pressed) = 0;
+
+			virtual void onWindowCursorPos(struct window_t* pWin, core::f64 xpos, core::f64 ypos) = 0;
+
+			virtual void onWindowCursorEnter(struct window_t* pWin, bool entered) = 0;
+
+			virtual void onWindowScroll(struct window_t* pWin, core::f64 dx, core::f64 dy) = 0;
+
+			virtual void onWindowKey(struct window_t* pWin, core::u8 key, bool pressed) = 0;
+
+			virtual void onWindowChar(struct window_t* pWin, core::u32 c) = 0;
+		};
+
 		struct window_t
 		{
 		public:
@@ -32,15 +56,15 @@ namespace ove
 
 			using window_pos_fn = std::function<void(window_t * pWin, core::u32 xpos, core::u32 ypos)>;
 
-			using window_mouse_btn_fn = std::function<void(window_t*, core::i32 button, core::i32 action, core::i32 mods)>;
+			using window_mouse_btn_fn = std::function<void(window_t*, core::u8 button, bool pressed)>;
 
 			using window_cursor_pos_fn = std::function<void(window_t * pWin, core::f64 xpos, core::f64 ypos)>;
 
 			using window_cursor_enter_fn = std::function<void(window_t * pWin, bool entered)>;
 
-			using window_scroll_fn = std::function<void(window_t * pWin, core::f64 dt)>;
+			using window_scroll_fn = std::function<void(window_t * pWin, core::f64 dx, core::f64 dy)>;
 
-			using window_key_fn = std::function<void(window_t * pWin, core::u8 key)>;
+			using window_key_fn = std::function<void(window_t * pWin, core::u8 key, bool pressed)>;
 
 			using window_char_fn = std::function<void(window_t * pWin, core::u32 c)>;
 
@@ -59,9 +83,9 @@ namespace ove
 
 			virtual void setSize(core::u32 width, core::u32 height) = 0;
 
-			virtual const char* getTitle() = 0;
+			virtual const char* getTitle() const = 0;
 
-			virtual void getSize(core::u32& width, core::u32& height) = 0;
+			virtual void getSize(core::u32& width, core::u32& height) const = 0;
 
 		public:
 			void setCloseCallback(window_close_fn callback);

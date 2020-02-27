@@ -243,6 +243,7 @@ namespace ove
 		//0x07 0x00dc	Keypad Decimal
 		//0x07 0x00dd	Keypad Hexadecimal
 
+		// TODO: https://open.spotify.com/track/527xklI1BeHbnWtAP9t3u6?si=D_nnQxB4Q0-7r6CbBMgeKA
 		constexpr core::u8 WIN_KB_LEFTCTRL = VK_CONTROL; // Keyboard Left Control
 		constexpr core::u8 WIN_KB_LEFTSHIFT = VK_SHIFT; // Keyboard Left Shift
 		constexpr core::u8 WIN_KB_LEFTALT = VK_MENU; // Keyboard Left Alt
