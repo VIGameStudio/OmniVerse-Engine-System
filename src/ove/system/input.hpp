@@ -15,11 +15,12 @@ namespace ove
 		constexpr core::u8 MBTN_RIGHT = 0x03; // Mouse button right
 
 		// https://source.android.com/devices/input/keyboard-devices.html
+		// https://gist.github.com/MightyPork/6da26e382a7ad91b5496ee55fdc73db2
 
-		constexpr core::u8 KB_KEYNONE = 0x00; // No key pressed
+		constexpr core::u8 KB_NONE = 0x00; // No key pressed
 
 		constexpr core::u8 KB_ERR_ROLLOVER = 0x01; // Keyboard Error Roll Over
-		constexpr core::u8 KB_POST_FAIL = 0x02; // Keyboard POST Fail
+		constexpr core::u8 KB_ERR_POST_FAIL = 0x02; // Keyboard POST Fail
 		constexpr core::u8 KB_ERR_UNDEFINED = 0x03; // Keyboard Error Undefined
 
 		constexpr core::u8 KB_A = 0x04; // Keyboard a and A
@@ -62,8 +63,7 @@ namespace ove
 
 		constexpr core::u8 KB_ENTER = 0x28; // Keyboard Return (ENTER)
 		constexpr core::u8 KB_ESCAPE = 0x29; // Keyboard ESCAPE
-		constexpr core::u8 KB_BACK = 0x04; // KEYCODE_BACK
-		constexpr core::u8 KB_DELETE = 0x2a; // Keyboard DELETE (Backspace)
+		constexpr core::u8 KB_BACKSPACE = 0x2a; // Keyboard DELETE (Backspace)
 		constexpr core::u8 KB_TAB = 0x2b; // Keyboard Tab
 		constexpr core::u8 KB_SPACE = 0x2c; // Keyboard Spacebar
 		constexpr core::u8 KB_MINUS = 0x2d; // Keyboard - and _
@@ -80,176 +80,166 @@ namespace ove
 		constexpr core::u8 KB_SLASH = 0x38; // Keyboard / and ?
 		constexpr core::u8 KB_CAPSLOCK = 0x39; // Keyboard Caps Lock
 
-		//0x07 0x003a	Keyboard F1	0x003b	KEY_F1	3.0	0x0083	KEYCODE_F1
-		//""	""	""	""	1.6	0x0052	KEYCODE_MENU
-		//0x07 0x003b	Keyboard F2	0x003c	KEY_F2	3.0	0x0084	KEYCODE_F2
-		//""	""	""	""	1.6	0x0002	KEYCODE_SOFT_RIGHT
-		//0x07 0x003c	Keyboard F3	0x003d	KEY_F3	3.0	0x0085	KEYCODE_F3
-		//""	""	""	""	1.6	0x0005	KEYCODE_CALL
-		//0x07 0x003d	Keyboard F4	0x003e	KEY_F4	3.0	0x0086	KEYCODE_F4
-		//""	""	""	""	1.6	0x0006	KEYCODE_ENDCALL
-		//0x07 0x003e	Keyboard F5	0x003f	KEY_F5	3.0	0x0087	KEYCODE_F5
-		//0x07 0x003f	Keyboard F6	0x0040	KEY_F6	3.0	0x0088	KEYCODE_F6
-		//0x07 0x0040	Keyboard F7	0x0041	KEY_F7	3.0	0x0089	KEYCODE_F7
-		//0x07 0x0041	Keyboard F8	0x0042	KEY_F8	3.0	0x008a	KEYCODE_F8
-		//0x07 0x0042	Keyboard F9	0x0043	KEY_F9	3.0	0x008b	KEYCODE_F9
-		//0x07 0x0043	Keyboard F10	0x0044	KEY_F10	3.0	0x008c	KEYCODE_F10
-		//""	""	""	""	2.3	0x0052	KEYCODE_MENU
-		//0x07 0x0044	Keyboard F11	0x0057	KEY_F11	3.0	0x008d	KEYCODE_F11
-		//0x07 0x0045	Keyboard F12	0x0058	KEY_F12	3.0	0x008e	KEYCODE_F12
-		//0x07 0x0046	Keyboard Print Screen	0x0063	KEY_SYSRQ	3.0	0x0078	KEYCODE_SYSRQ
-		//0x07 0x0047	Keyboard Scroll Lock	0x0046	KEY_SCROLLLOCK	3.0	0x0074	KEYCODE_SCROLL_LOCK
-		//0x07 0x0048	Keyboard Pause	0x0077	KEY_PAUSE	3.0	0x0079	KEYCODE_BREAK
-		//0x07 0x0049	Keyboard Insert	0x006e	KEY_INSERT	3.0	0x007c	KEYCODE_INSERT
-		//0x07 0x004a	Keyboard Home	0x0066	KEY_HOME	3.0	0x007a	KEYCODE_MOVE_HOME
-		//""	""	""	""	1.6	0x0003	KEYCODE_HOME
-		//0x07 0x004b	Keyboard Page Up	0x0068	KEY_PAGEUP	3.0	0x005c	KEYCODE_PAGE_UP
-		//0x07 0x004c	Keyboard Delete Forward	0x006f	KEY_DELETE	3.0	0x0070	KEYCODE_FORWARD_DEL
-		//0x07 0x004d	Keyboard End	0x006b	KEY_END	3.0	0x007b	KEYCODE_MOVE_END
-		//""	""	""	""	1.6	0x0006	KEYCODE_ENDCALL
-		//0x07 0x004e	Keyboard Page Down	0x006d	KEY_PAGEDOWN	3.0	0x005d	KEYCODE_PAGE_DOWN
+		constexpr core::u8 KB_F1 = 0x3a; // Keyboard F1
+		constexpr core::u8 KB_F2 = 0x3b; // Keyboard F2
+		constexpr core::u8 KB_F3 = 0x3c; // Keyboard F3
+		constexpr core::u8 KB_F4 = 0x3d; // Keyboard F4
+		constexpr core::u8 KB_F5 = 0x3e; // Keyboard F5
+		constexpr core::u8 KB_F6 = 0x3f; // Keyboard F6
+		constexpr core::u8 KB_F7 = 0x40; // Keyboard F7
+		constexpr core::u8 KB_F8 = 0x41; // Keyboard F8
+		constexpr core::u8 KB_F9 = 0x42; // Keyboard F9
+		constexpr core::u8 KB_F10 = 0x43; // Keyboard F10
+		constexpr core::u8 KB_F11 = 0x44; // Keyboard F11
+		constexpr core::u8 KB_F12 = 0x45; // Keyboard F12
+
+		constexpr core::u8 KB_SYSRQ = 0x46; // Keyboard Print Screen
+		constexpr core::u8 KB_SCROLLLOCK = 0x47; // Keyboard Scroll Lock
+		constexpr core::u8 KB_PAUSE = 0x48; // Keyboard Pause
+		constexpr core::u8 KB_INSERT = 0x49; // Keyboard Insert
+		constexpr core::u8 KB_HOME = 0x4a; // Keyboard Home
+		constexpr core::u8 KB_PAGEUP = 0x4b; // Keyboard Page Up
+		constexpr core::u8 KB_DELETE = 0x4c; // Keyboard Delete Forward
+		constexpr core::u8 KB_END = 0x4d; // Keyboard End
+		constexpr core::u8 KB_PAGEDOWN = 0x4e; // Keyboard Page Down
 
 		constexpr core::u8 KB_RIGHT = 0x4f; // Keyboard Right Arrow
 		constexpr core::u8 KB_LEFT = 0x50; // Keyboard Left Arrow
 		constexpr core::u8 KB_DOWN = 0x51; // Keyboard Down Arrow
 		constexpr core::u8 KB_UP = 0x52; // Keyboard Up Arrow
 
-		//0x07 0x0053	Keyboard Num Lock and Clear	0x0045	KEY_NUMLOCK	3.0	0x008f	KEYCODE_NUM_LOCK
+		constexpr core::u8 KB_NUMLOCK = 0x53; // Keyboard Num Lock and Clear
+		constexpr core::u8 KB_KPSLASH = 0x54; // Keypad /
+		constexpr core::u8 KB_KPASTERISK = 0x55; // Keypad *
+		constexpr core::u8 KB_KPMINUS = 0x56; // Keypad -
+		constexpr core::u8 KB_KPPLUS = 0x57; // Keypad +
+		constexpr core::u8 KB_KPENTER = 0x58; // Keypad ENTER
+		constexpr core::u8 KB_KP1 = 0x59; // Keypad 1 and End
+		constexpr core::u8 KB_KP2 = 0x5a; // Keypad 2 and Down Arrow
+		constexpr core::u8 KB_KP3 = 0x5b; // Keypad 3 and PageDn
+		constexpr core::u8 KB_KP4 = 0x5c; // Keypad 4 and Left Arrow
+		constexpr core::u8 KB_KP5 = 0x5d; // Keypad 5
+		constexpr core::u8 KB_KP6 = 0x5e; // Keypad 6 and Right Arrow
+		constexpr core::u8 KB_KP7 = 0x5f; // Keypad 7 and Home
+		constexpr core::u8 KB_KP8 = 0x60; // Keypad 8 and Up Arrow
+		constexpr core::u8 KB_KP9 = 0x61; // Keypad 9 and Page Up
+		constexpr core::u8 KB_KP0 = 0x62; // Keypad 0 and Insert
+		constexpr core::u8 KB_KPDOT = 0x63; // Keypad . and Delete
 
-		//0x07 0x0054	Keypad /	0x0062	KEY_KPSLASH	3.0	0x009a	KEYCODE_NUMPAD_DIVIDE
-		//0x07 0x0055	Keypad *	0x0037	KEY_KPASTERISK	3.0	0x009b	KEYCODE_NUMPAD_MULTIPLY
-		//0x07 0x0056	Keypad -	0x004a	KEY_KPMINUS	3.0	0x009c	KEYCODE_NUMPAD_SUBTRACT
-		//0x07 0x0057	Keypad +	0x004e	KEY_KPPLUS	3.0	0x009d	KEYCODE_NUMPAD_ADD
-		//0x07 0x0058	Keypad ENTER	0x0060	KEY_KPENTER	3.0	0x00a0	KEYCODE_NUMPAD_ENTER
-		//0x07 0x0059	Keypad 1 and End	0x004f	KEY_KP1	3.0	0x0091	KEYCODE_NUMPAD_1
-		//0x07 0x005a	Keypad 2 and Down Arrow	0x0050	KEY_KP2	3.0	0x0092	KEYCODE_NUMPAD_2
-		//0x07 0x005b	Keypad 3 and PageDn	0x0051	KEY_KP3	3.0	0x0093	KEYCODE_NUMPAD_3
-		//0x07 0x005c	Keypad 4 and Left Arrow	0x004b	KEY_KP4	3.0	0x0094	KEYCODE_NUMPAD_4
-		//0x07 0x005d	Keypad 5	0x004c	KEY_KP5	3.0	0x0095	KEYCODE_NUMPAD_5
-		//0x07 0x005e	Keypad 6 and Right Arrow	0x004d	KEY_KP6	3.0	0x0096	KEYCODE_NUMPAD_6
-		//0x07 0x005f	Keypad 7 and Home	0x0047	KEY_KP7	3.0	0x0097	KEYCODE_NUMPAD_7
-		//0x07 0x0060	Keypad 8 and Up Arrow	0x0048	KEY_KP8	3.0	0x0098	KEYCODE_NUMPAD_8
-		//0x07 0x0061	Keypad 9 and Page Up	0x0049	KEY_KP9	3.0	0x0099	KEYCODE_NUMPAD_9
-		//0x07 0x0062	Keypad 0 and Insert	0x0052	KEY_KP0	3.0	0x0090	KEYCODE_NUMPAD_0
-		//0x07 0x0063	Keypad . and Delete	0x0053	KEY_KPDOT	3.0	0x009e	KEYCODE_NUMPAD_DOT
+		constexpr core::u8 KB_102ND = 0x64; // Keyboard Non-US \ and |
+		constexpr core::u8 KB_COMPOSE = 0x65; // Keyboard Application
+		constexpr core::u8 KB_POWER = 0x66; // Keyboard Power
+		constexpr core::u8 KB_KPEQUAL = 0x67; // Keypad =
 
-		//0x07 0x0064	Keyboard Non-US \ and |	0x0056	KEY_102ND	4.0	0x0049	KEYCODE_BACKSLASH	1
-		//0x07 0x0065	Keyboard Application	0x007f	KEY_COMPOSE	3.0	0x0052	KEYCODE_MENU
-		//""	""	""	""	1.6	0x0054	KEYCODE_SEARCH
-		//0x07 0x0066	Keyboard Power	0x0074	KEY_POWER	1.6	0x001a	KEYCODE_POWER
+		constexpr core::u8 KB_F13 = 0x68; // Keyboard F13
+		constexpr core::u8 KB_F14 = 0x69; // Keyboard F14
+		constexpr core::u8 KB_F15 = 0x6a; // Keyboard F15
+		constexpr core::u8 KB_F16 = 0x6b; // Keyboard F16
+		constexpr core::u8 KB_F17 = 0x6c; // Keyboard F17
+		constexpr core::u8 KB_F18 = 0x6d; // Keyboard F18
+		constexpr core::u8 KB_F19 = 0x6e; // Keyboard F19
+		constexpr core::u8 KB_F20 = 0x6f; // Keyboard F20
+		constexpr core::u8 KB_F21 = 0x70; // Keyboard F21
+		constexpr core::u8 KB_F22 = 0x71; // Keyboard F22
+		constexpr core::u8 KB_F23 = 0x72; // Keyboard F23
+		constexpr core::u8 KB_F24 = 0x73; // Keyboard F24
 
-		//0x07 0x0067	Keypad =	0x0075	KEY_KPEQUAL	3.0	0x00a1	KEYCODE_NUMPAD_EQUALS
+		constexpr core::u8 KB_OPEN = 0x74; // Keyboard Execute
+		constexpr core::u8 KB_HELP = 0x75; // Keyboard Help
+		constexpr core::u8 KB_PROPS = 0x76; // Keyboard Menu
+		constexpr core::u8 KB_FRONT = 0x77; // Keyboard Select
+		constexpr core::u8 KB_STOP = 0x78; // Keyboard Stop
+		constexpr core::u8 KB_AGAIN = 0x79; // Keyboard Again
+		constexpr core::u8 KB_UNDO = 0x7a; // Keyboard Undo
+		constexpr core::u8 KB_CUT = 0x7b; // Keyboard Cut
+		constexpr core::u8 KB_COPY = 0x7c; // Keyboard Copy
+		constexpr core::u8 KB_PASTE = 0x7d; // Keyboard Paste
+		constexpr core::u8 KB_FIND = 0x7e; // Keyboard Find
+		constexpr core::u8 KB_MUTE = 0x7f; // Keyboard Mute
+		constexpr core::u8 KB_VOLUMEUP = 0x80; // Keyboard Volume Up
+		constexpr core::u8 KB_VOLUMEDOWN = 0x81; // Keyboard Volume Down
+		//constexpr core::u8 KB_ = 0x82  Keyboard Locking Caps Lock
+		//constexpr core::u8 KB_ = 0x83  Keyboard Locking Num Lock
+		//constexpr core::u8 KB_ = 0x84  Keyboard Locking Scroll Lock
+		constexpr core::u8 KB_KPCOMMA = 0x85; // Keypad Comma
+		//constexpr core::u8 KB_ = 0x86  Keypad Equal Sign
+		constexpr core::u8 KB_RO = 0x87; // Keyboard International1
+		constexpr core::u8 KB_KATAKANAHIRAGANA = 0x88; // Keyboard International2
+		constexpr core::u8 KB_YEN = 0x89; // Keyboard International3
+		constexpr core::u8 KB_HENKAN = 0x8a; // Keyboard International4
+		constexpr core::u8 KB_MUHENKAN = 0x8b; // Keyboard International5
+		constexpr core::u8 KB_KPJPCOMMA = 0x8c; // Keyboard International6
+		//constexpr core::u8 KB_ = 0x8d  Keyboard International7
+		//constexpr core::u8 KB_ = 0x8e  Keyboard International8
+		//constexpr core::u8 KB_ = 0x8f  Keyboard International9
+		constexpr core::u8 KB_HANGEUL = 0x90; // Keyboard LANG1
+		constexpr core::u8 KB_HANJA = 0x91; // Keyboard LANG2
+		constexpr core::u8 KB_KATAKANA = 0x92; // Keyboard LANG3
+		constexpr core::u8 KB_HIRAGANA = 0x93; // Keyboard LANG4
+		constexpr core::u8 KB_ZENKAKUHANKAKU = 0x94; // Keyboard LANG5
+		//constexpr core::u8 KB_ = 0x95  Keyboard LANG6
+		//constexpr core::u8 KB_ = 0x96  Keyboard LANG7
+		//constexpr core::u8 KB_ = 0x97  Keyboard LANG8
+		//constexpr core::u8 KB_ = 0x98  Keyboard LANG9
+		//constexpr core::u8 KB_ = 0x99  Keyboard Alternate Erase
+		//constexpr core::u8 KB_ = 0x9a  Keyboard SysReq/Attention
+		//constexpr core::u8 KB_ = 0x9b  Keyboard Cancel
+		//constexpr core::u8 KB_ = 0x9c  Keyboard Clear
+		//constexpr core::u8 KB_ = 0x9d  Keyboard Prior
+		//constexpr core::u8 KB_ = 0x9e  Keyboard Return
+		//constexpr core::u8 KB_ = 0x9f  Keyboard Separator
+		//constexpr core::u8 KB_ = 0xa0  Keyboard Out
+		//constexpr core::u8 KB_ = 0xa1  Keyboard Oper
+		//constexpr core::u8 KB_ = 0xa2  Keyboard Clear/Again
+		//constexpr core::u8 KB_ = 0xa3  Keyboard CrSel/Props
+		//constexpr core::u8 KB_ = 0xa4  Keyboard ExSel
 
-		//0x07 0x0068	Keyboard F13	0x00b7	KEY_F13
-		//0x07 0x0069	Keyboard F14	0x00b8	KEY_F14
-		//0x07 0x006a	Keyboard F15	0x00b9	KEY_F15
-		//0x07 0x006b	Keyboard F16	0x00ba	KEY_F16
-		//0x07 0x006c	Keyboard F17	0x00bb	KEY_F17
-		//0x07 0x006d	Keyboard F18	0x00bc	KEY_F18
-		//0x07 0x006e	Keyboard F19	0x00bd	KEY_F19
-		//0x07 0x006f	Keyboard F20	0x00be	KEY_F20
-		//0x07 0x0070	Keyboard F21	0x00bf	KEY_F21
-		//0x07 0x0071	Keyboard F22	0x00c0	KEY_F22
-		//0x07 0x0072	Keyboard F23	0x00c1	KEY_F23
-		//0x07 0x0073	Keyboard F24	0x00c2	KEY_F24
-		//0x07 0x0074	Keyboard Execute	0x0086	KEY_OPEN
-		//0x07 0x0075	Keyboard Help	0x008a	KEY_HELP
-		//0x07 0x0076	Keyboard Menu	0x0082	KEY_PROPS
-		//0x07 0x0077	Keyboard Select	0x0084	KEY_FRONT
-		//0x07 0x0078	Keyboard Stop	0x0080	KEY_STOP	3.0	0x0056	KEYCODE_MEDIA_STOP
-		//0x07 0x0079	Keyboard Again	0x0081	KEY_AGAIN
-		//0x07 0x007a	Keyboard Undo	0x0083	KEY_UNDO
-		//0x07 0x007b	Keyboard Cut	0x0089	KEY_CUT
-		//0x07 0x007c	Keyboard Copy	0x0085	KEY_COPY
-		//0x07 0x007d	Keyboard Paste	0x0087	KEY_PASTE
-		//0x07 0x007e	Keyboard Find	0x0088	KEY_FIND
-		//0x07 0x007f	Keyboard Mute	0x0071	KEY_MUTE	3.0	0x00a4	KEYCODE_VOLUME_MUTE
-		//0x07 0x0080	Keyboard Volume Up	0x0073	KEY_VOLUMEUP	1.6	0x0018	KEYCODE_VOLUME_UP
-		//0x07 0x0081	Keyboard Volume Down	0x0072	KEY_VOLUMEDOWN	1.6	0x0019	KEYCODE_VOLUME_DOWN
-		//0x07 0x0082	Keyboard Locking Caps Lock
-		//0x07 0x0083	Keyboard Locking Num Lock
-		//0x07 0x0084	Keyboard Locking Scroll Lock
-
-		//0x07 0x0085	Keypad Comma	0x0079	KEY_KPCOMMA	3.0	0x009f	KEYCODE_NUMPAD_COMMA
-		//0x07 0x0086	Keypad Equal Sign
-
-		//0x07 0x0087	Keyboard International1	0x0059	KEY_RO
-		//0x07 0x0088	Keyboard International2	0x005d	KEY_KATAKANAHIRAGANA
-		//0x07 0x0089	Keyboard International3	0x007c	KEY_YEN
-		//0x07 0x008a	Keyboard International4	0x005c	KEY_HENKAN
-		//0x07 0x008b	Keyboard International5	0x005e	KEY_MUHENKAN
-		//0x07 0x008c	Keyboard International6	0x005f	KEY_KPJPCOMMA
-		//0x07 0x008d	Keyboard International7
-		//0x07 0x008e	Keyboard International8
-		//0x07 0x008f	Keyboard International9
-		//0x07 0x0090	Keyboard LANG1	0x007a	KEY_HANGEUL
-		//0x07 0x0091	Keyboard LANG2	0x007b	KEY_HANJA
-		//0x07 0x0092	Keyboard LANG3	0x005a	KEY_KATAKANA
-		//0x07 0x0093	Keyboard LANG4	0x005b	KEY_HIRAGANA
-		//0x07 0x0094	Keyboard LANG5	0x0055	KEY_ZENKAKUHANKAKU
-		//0x07 0x0095	Keyboard LANG6
-		//0x07 0x0096	Keyboard LANG7
-		//0x07 0x0097	Keyboard LANG8
-		//0x07 0x0098	Keyboard LANG9
-		//0x07 0x0099	Keyboard Alternate Erase
-		//0x07 0x009a	Keyboard SysReq/Attention
-		//0x07 0x009b	Keyboard Cancel
-		//0x07 0x009c	Keyboard Clear
-		//0x07 0x009d	Keyboard Prior
-		//0x07 0x009e	Keyboard Return
-		//0x07 0x009f	Keyboard Separator
-		//0x07 0x00a0	Keyboard Out
-		//0x07 0x00a1	Keyboard Oper
-		//0x07 0x00a2	Keyboard Clear/Again
-		//0x07 0x00a3	Keyboard CrSel/Props
-		//0x07 0x00a4	Keyboard ExSel
-
-		//0x07 0x00b0	Keypad 00
-		//0x07 0x00b1	Keypad 000
-		//0x07 0x00b2	Thousands Separator
-		//0x07 0x00b3	Decimal Separator
-		//0x07 0x00b4	Currency Unit
-		//0x07 0x00b5	Currency Sub-unit
-		//0x07 0x00b6	Keypad (	0x00b3	KEY_KPLEFTPAREN	3.0	0x00a2	KEYCODE_NUMPAD_LEFT_PAREN
-		//0x07 0x00b7	Keypad )	0x00b4	KEY_KPRIGHTPAREN	3.0	0x00a3	KEYCODE_NUMPAD_RIGHT_PAREN
-		//0x07 0x00b8	Keypad {
-		//0x07 0x00b9	Keypad }
-		//0x07 0x00ba	Keypad Tab
-		//0x07 0x00bb	Keypad Backspace
-		//0x07 0x00bc	Keypad A
-		//0x07 0x00bd	Keypad B
-		//0x07 0x00be	Keypad C
-		//0x07 0x00bf	Keypad D
-		//0x07 0x00c0	Keypad E
-		//0x07 0x00c1	Keypad F
-		//0x07 0x00c2	Keypad XOR
-		//0x07 0x00c3	Keypad ^
-		//0x07 0x00c4	Keypad %
-		//0x07 0x00c5	Keypad <
-		//0x07 0x00c6	Keypad >
-		//0x07 0x00c7	Keypad &
-		//0x07 0x00c8	Keypad &&
-		//0x07 0x00c9	Keypad |
-		//0x07 0x00ca	Keypad ||
-		//0x07 0x00cb	Keypad :
-		//0x07 0x00cc	Keypad #
-		//0x07 0x00cd	Keypad Space
-		//0x07 0x00ce	Keypad @
-		//0x07 0x00cf	Keypad !
-		//0x07 0x00d0	Keypad Memory Store
-		//0x07 0x00d1	Keypad Memory Recall
-		//0x07 0x00d2	Keypad Memory Clear
-		//0x07 0x00d3	Keypad Memory Add
-		//0x07 0x00d4	Keypad Memory Subtract
-		//0x07 0x00d5	Keypad Memory Multiply
-		//0x07 0x00d6	Keypad Memory Divide
-		//0x07 0x00d7	Keypad +/-
-		//0x07 0x00d8	Keypad Clear
-		//0x07 0x00d9	Keypad Clear Entry
-		//0x07 0x00da	Keypad Binary
-		//0x07 0x00db	Keypad Octal
-		//0x07 0x00dc	Keypad Decimal
-		//0x07 0x00dd	Keypad Hexadecimal
+		//constexpr core::u8 KB_ = 0xb0  Keypad 00
+		//constexpr core::u8 KB_ = 0xb1  Keypad 000
+		//constexpr core::u8 KB_ = 0xb2  Thousands Separator
+		//constexpr core::u8 KB_ = 0xb3  Decimal Separator
+		//constexpr core::u8 KB_ = 0xb4  Currency Unit
+		//constexpr core::u8 KB_ = 0xb5  Currency Sub-unit
+		constexpr core::u8 KB_KPLEFTPAREN = 0xb6; // Keypad (
+		constexpr core::u8 KB_KPRIGHTPAREN = 0xb7; // Keypad )
+		//constexpr core::u8 KB_ = 0xb8  Keypad {
+		//constexpr core::u8 KB_ = 0xb9  Keypad }
+		//constexpr core::u8 KB_ = 0xba  Keypad Tab
+		//constexpr core::u8 KB_ = 0xbb  Keypad Backspace
+		//constexpr core::u8 KB_ = 0xbc  Keypad A
+		//constexpr core::u8 KB_ = 0xbd  Keypad B
+		//constexpr core::u8 KB_ = 0xbe  Keypad C
+		//constexpr core::u8 KB_ = 0xbf  Keypad D
+		//constexpr core::u8 KB_ = 0xc0  Keypad E
+		//constexpr core::u8 KB_ = 0xc1  Keypad F
+		//constexpr core::u8 KB_ = 0xc2  Keypad XOR
+		//constexpr core::u8 KB_ = 0xc3  Keypad ^
+		//constexpr core::u8 KB_ = 0xc4  Keypad %
+		//constexpr core::u8 KB_ = 0xc5  Keypad <
+		//constexpr core::u8 KB_ = 0xc6  Keypad >
+		//constexpr core::u8 KB_ = 0xc7  Keypad &
+		//constexpr core::u8 KB_ = 0xc8  Keypad &&
+		//constexpr core::u8 KB_ = 0xc9  Keypad |
+		//constexpr core::u8 KB_ = 0xca  Keypad ||
+		//constexpr core::u8 KB_ = 0xcb  Keypad :
+		//constexpr core::u8 KB_ = 0xcc  Keypad #
+		//constexpr core::u8 KB_ = 0xcd  Keypad Space
+		//constexpr core::u8 KB_ = 0xce  Keypad @
+		//constexpr core::u8 KB_ = 0xcf  Keypad !
+		//constexpr core::u8 KB_ = 0xd0  Keypad Memory Store
+		//constexpr core::u8 KB_ = 0xd1  Keypad Memory Recall
+		//constexpr core::u8 KB_ = 0xd2  Keypad Memory Clear
+		//constexpr core::u8 KB_ = 0xd3  Keypad Memory Add
+		//constexpr core::u8 KB_ = 0xd4  Keypad Memory Subtract
+		//constexpr core::u8 KB_ = 0xd5  Keypad Memory Multiply
+		//constexpr core::u8 KB_ = 0xd6  Keypad Memory Divide
+		//constexpr core::u8 KB_ = 0xd7  Keypad +/-
+		//constexpr core::u8 KB_ = 0xd8  Keypad Clear
+		//constexpr core::u8 KB_ = 0xd9  Keypad Clear Entry
+		//constexpr core::u8 KB_ = 0xda  Keypad Binary
+		//constexpr core::u8 KB_ = 0xdb  Keypad Octal
+		//constexpr core::u8 KB_ = 0xdc  Keypad Decimal
+		//constexpr core::u8 KB_ = 0xdd  Keypad Hexadecimal
 
 		constexpr core::u8 KB_LEFTCTRL = 0xe0; // Keyboard Left Control
 		constexpr core::u8 KB_LEFTSHIFT = 0xe1; // Keyboard Left Shift
@@ -260,25 +250,25 @@ namespace ove
 		constexpr core::u8 KB_RIGHTALT = 0xe6; // Keyboard Right Alt
 		constexpr core::u8 KB_RIGHTMETA = 0xe7; // Keyboard Right GUI
 
-		//0x07 0x00e8		0x00a4	KEY_PLAYPAUSE	3.0	0x0055	KEYCODE_MEDIA_PLAY_PAUSE
-		//0x07 0x00e9		0x00a6	KEY_STOPCD	3.0	0x0056	KEYCODE_MEDIA_STOP
-		//0x07 0x00ea		0x00a5	KEY_PREVIOUSSONG	3.0	0x0058	KEYCODE_MEDIA_PREVIOUS
-		//0x07 0x00eb		0x00a3	KEY_NEXTSONG	3.0	0x0057	KEYCODE_MEDIA_NEXT
-		//0x07 0x00ec		0x00a1	KEY_EJECTCD	3.0	0x0081	KEYCODE_MEDIA_EJECT
-		//0x07 0x00ed		0x0073	KEY_VOLUMEUP	1.6	0x0018	KEYCODE_VOLUME_UP
-		//0x07 0x00ee		0x0072	KEY_VOLUMEDOWN	1.6	0x0019	KEYCODE_VOLUME_DOWN
-		//0x07 0x00ef		0x0071	KEY_MUTE	3.0	0x00a4	KEYCODE_VOLUME_MUTE
-		//0x07 0x00f0		0x0096	KEY_WWW	1.6	0x0040	KEYCODE_EXPLORER
-		//0x07 0x00f1		0x009e	KEY_BACK	1.6	0x0004	KEYCODE_BACK
-		//0x07 0x00f2		0x009f	KEY_FORWARD	3.0	0x007d	KEYCODE_FORWARD
-		//0x07 0x00f3		0x0080	KEY_STOP	3.0	0x0056	KEYCODE_MEDIA_STOP
-		//0x07 0x00f4		0x0088	KEY_FIND
-		//0x07 0x00f5		0x00b1	KEY_SCROLLUP	3.0	0x005c	KEYCODE_PAGE_UP
-		//0x07 0x00f6		0x00b2	KEY_SCROLLDOWN	3.0	0x005d	KEYCODE_PAGE_DOWN
-		//0x07 0x00f7		0x00b0	KEY_EDIT
-		//0x07 0x00f8		0x008e	KEY_SLEEP
-		//0x07 0x00f9		0x0098	KEY_COFFEE	4.0	0x001a	KEYCODE_POWER
-		//0x07 0x00fa		0x00ad	KEY_REFRESH
-		//0x07 0x00fb		0x008c	KEY_CALC	4.0.3	0x00d2	KEYCODE_CALCULATOR
+		constexpr core::u8 KB_MEDIA_PLAYPAUSE = 0xe8;
+		constexpr core::u8 KB_MEDIA_STOPCD = 0xe9;
+		constexpr core::u8 KB_MEDIA_PREVIOUSSONG = 0xea;
+		constexpr core::u8 KB_MEDIA_NEXTSONG = 0xeb;
+		constexpr core::u8 KB_MEDIA_EJECTCD = 0xec;
+		constexpr core::u8 KB_MEDIA_VOLUMEUP = 0xed;
+		constexpr core::u8 KB_MEDIA_VOLUMEDOWN = 0xee;
+		constexpr core::u8 KB_MEDIA_MUTE = 0xef;
+		constexpr core::u8 KB_MEDIA_WWW = 0xf0;
+		constexpr core::u8 KB_MEDIA_BACK = 0xf1;
+		constexpr core::u8 KB_MEDIA_FORWARD = 0xf2;
+		constexpr core::u8 KB_MEDIA_STOP = 0xf3;
+		constexpr core::u8 KB_MEDIA_FIND = 0xf4;
+		constexpr core::u8 KB_MEDIA_SCROLLUP = 0xf5;
+		constexpr core::u8 KB_MEDIA_SCROLLDOWN = 0xf6;
+		constexpr core::u8 KB_MEDIA_EDIT = 0xf7;
+		constexpr core::u8 KB_MEDIA_SLEEP = 0xf8;
+		constexpr core::u8 KB_MEDIA_COFFEE = 0xf9;
+		constexpr core::u8 KB_MEDIA_REFRESH = 0xfa;
+		constexpr core::u8 KB_MEDIA_CALC = 0xfb;
 	}
 }

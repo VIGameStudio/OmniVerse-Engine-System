@@ -18,6 +18,10 @@ using namespace ove::system;
 std::array<u8, 0xff> createKeycodeMap()
 {
 	std::array<u8, 0xff> map;
+	for (size_t i = 0; i < 0xff; ++i)
+	{
+		map[i] = KB_NONE;
+	}
 
 	map[WIN_KB_A] = KB_A;
 	map[WIN_KB_B] = KB_B;
@@ -59,8 +63,7 @@ std::array<u8, 0xff> createKeycodeMap()
 
 	map[WIN_KB_ENTER] = KB_ENTER;
 	map[WIN_KB_ESCAPE] = KB_ESCAPE;
-	map[WIN_KB_BACK] = KB_BACK;
-	map[WIN_KB_DELETE] = KB_DELETE;
+	map[WIN_KB_BACKSPACE] = KB_BACKSPACE;
 	map[WIN_KB_TAB] = KB_TAB;
 	map[WIN_KB_SPACE] = KB_SPACE;
 	map[WIN_KB_MINUS] = KB_MINUS;
@@ -76,6 +79,28 @@ std::array<u8, 0xff> createKeycodeMap()
 	map[WIN_KB_DOT] = KB_DOT;
 	map[WIN_KB_SLASH] = KB_SLASH;
 	map[WIN_KB_CAPSLOCK] = KB_CAPSLOCK;
+
+	map[WIN_KB_F1] = KB_F1;
+	map[WIN_KB_F2] = KB_F2;
+	map[WIN_KB_F3] = KB_F3;
+	map[WIN_KB_F4] = KB_F4;
+	map[WIN_KB_F5] = KB_F5;
+	map[WIN_KB_F6] = KB_F6;
+	map[WIN_KB_F7] = KB_F7;
+	map[WIN_KB_F8] = KB_F8;
+	map[WIN_KB_F9] = KB_F9;
+	map[WIN_KB_F10] = KB_F10;
+	map[WIN_KB_F11] = KB_F11;
+	map[WIN_KB_F12] = KB_F12;
+	map[WIN_KB_SYSRQ] = KB_SYSRQ;
+	map[WIN_KB_SCROLLLOCK] = KB_SCROLLLOCK;
+	map[WIN_KB_PAUSE] = KB_PAUSE;
+	map[WIN_KB_INSERT] = KB_INSERT;
+	map[WIN_KB_HOME] = KB_HOME;
+	map[WIN_KB_PAGEUP] = KB_PAGEUP;
+	map[WIN_KB_DELETE] = KB_DELETE;
+	map[WIN_KB_END] = KB_END;
+	map[WIN_KB_PAGEDOWN] = KB_PAGEDOWN;
 
 	map[WIN_KB_RIGHT] = KB_RIGHT;
 	map[WIN_KB_LEFT] = KB_LEFT;
@@ -238,7 +263,10 @@ bool win_window_t::create(const window_config_t& config)
 LONG WINAPI WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	win_window_t* win = reinterpret_cast<win_window_t*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
-	if (win) return win->wndProc(hWnd, uMsg, wParam, lParam);
+	if (win != nullptr)
+	{
+		return win->wndProc(hWnd, uMsg, wParam, lParam);
+	}
 	return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
 
@@ -406,4 +434,68 @@ void win_window_t::getSize(u32& width, u32& height) const
 		width = rect.right - rect.left;
 		height = rect.bottom - rect.top;
 	}
+}
+
+void win_window_t::setMousePos(i32 x, i32 y)
+{
+}
+
+cursor_t* win_window_t::loadCursor()
+{
+	return nullptr;
+}
+
+cursor_t* win_window_t::loadSystemCursor(u8 type)
+{
+	return nullptr;
+}
+
+void win_window_t::setCursor(cursor_t* cursor)
+{
+}
+
+void win_window_t::setInputMode(u8 target, u8 mode)
+{
+}
+
+u8 win_window_t::getInputMode(u8 target)
+{
+	return 0;
+}
+
+const char* win_window_t::getClipboardString()
+{
+	if (!OpenClipboard(nullptr))
+	{
+		return "";
+	}
+
+	HANDLE hData = GetClipboardData(CF_TEXT);
+	if (hData == nullptr)
+	{
+		return "";
+	}
+
+	char* pszText = static_cast<char*>(GlobalLock(hData));
+	if (pszText == nullptr)
+	{
+		return "";
+	}
+
+	GlobalUnlock(hData);
+	CloseClipboard();
+
+	return pszText;
+}
+
+void win_window_t::setClipboardString(const char* text)
+{
+	const size_t len = strlen(text) + 1;
+	HGLOBAL hMem = GlobalAlloc(GMEM_MOVEABLE, len);
+	memcpy(GlobalLock(hMem), text, len);
+	GlobalUnlock(hMem);
+	OpenClipboard(0);
+	EmptyClipboard();
+	SetClipboardData(CF_TEXT, hMem); // CF_UNICODETEXT for wchar_t*
+	CloseClipboard();
 }

@@ -1,7 +1,8 @@
 #pragma once
 
-#include <ove/system/input.hpp>
 #include <ove/core/util/types.hpp>
+#include <ove/system/input.hpp>
+#include <ove/system/cursor.hpp>
 
 #include <string>
 #include <functional>
@@ -86,6 +87,22 @@ namespace ove
 			virtual const char* getTitle() const = 0;
 
 			virtual void getSize(core::u32& width, core::u32& height) const = 0;
+
+			virtual void setMousePos(core::i32 x, core::i32 y) = 0;
+
+			virtual cursor_t* loadCursor() = 0;
+
+			virtual cursor_t* loadSystemCursor(core::u8 type) = 0;
+
+			virtual void setCursor(cursor_t* cursor) = 0;
+
+			virtual void setInputMode(core::u8 target, core::u8 mode) = 0;
+
+			virtual core::u8 getInputMode(core::u8 target) = 0;
+
+			virtual const char* getClipboardString() = 0;
+
+			virtual void setClipboardString(const char* text) = 0;
 
 		public:
 			void setCloseCallback(window_close_fn callback);
